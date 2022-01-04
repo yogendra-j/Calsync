@@ -1,4 +1,5 @@
-﻿using CalendarSyncPOC.Models;
+﻿using CalendarSync.SystemCalendar;
+using CalendarSyncPOC.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace CalendarSyncPOC
         { }
 
         public DbSet<CalendarConfigurationSettings> CalendarConfigurationSettings { get; set; }
+        public DbSet<ServiceCalendarEvent> ServiceCalendarEvent { get; set; }
     }
 }

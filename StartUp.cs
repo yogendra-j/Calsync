@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using CalendarSync.SystemCalendar;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +15,7 @@ namespace CalendarSyncPOC
             string connectionString = Environment.GetEnvironmentVariable("ConnectionStrings:Default");
             builder.Services.AddDbContext<DbContextAzure>(
                 options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, connectionString));
+            builder.Services.AddTransient<IServiceCalendarAppService, ServiceCalendarAppService>();
         }
     }
 }
