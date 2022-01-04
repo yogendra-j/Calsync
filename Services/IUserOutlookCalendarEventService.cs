@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CalendarSync.SystemCalendar.Dto;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CalendarSync.SystemCalendar
