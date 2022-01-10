@@ -20,10 +20,10 @@ namespace CalendarSyncPOC
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
-            var authInfo = new AuthInfo();
-            config.Bind(nameof(AuthInfo), authInfo);
+            var functionSettings = new FunctionSettings();
+            config.Bind(nameof(FunctionSettings), functionSettings);
 
-            builder.Services.AddSingleton(authInfo);
+            builder.Services.AddSingleton(functionSettings);
             builder.Services.AddDbContext<DbContextAzure>(
                 options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, connectionString));
         }

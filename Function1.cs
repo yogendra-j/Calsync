@@ -21,11 +21,11 @@ namespace CalendarSync
     public class Function1
     {
         private readonly DbContextAzure dbContext;
-        private readonly AuthInfo authInfo;
-        public Function1(DbContextAzure dbContext, AuthInfo authInfo)
+        private readonly FunctionSettings functionSettings;
+        public Function1(DbContextAzure dbContext, FunctionSettings functionSettings)
         {
             this.dbContext = dbContext;
-            this.authInfo = authInfo;
+            this.functionSettings = functionSettings;
         }
         [FunctionName("Function1")]
         public async Task Run([TimerTrigger("0 */1 * * * *"
@@ -46,7 +46,7 @@ namespace CalendarSync
 
                 var endSearchDate = DateTime.UtcNow.AddMonths(1).ToString("yyyy-MM-ddTHH:mm:ssZ");
                 var startSearchDate = DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ssZ");
-                var url = $"https://localhost:44301/api/services/app/CalendarSync/SyncAllTeamDeltaEvents?startSearchDate={startSearchDate}&endSearchDate={endSearchDate}";
+                var url = $"{functionSettings.teamSyncApi}?startSearchDate={startSearchDate}&endSearchDate={endSearchDate}";
                 var client = new RestClient(url);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
@@ -93,11 +93,11 @@ namespace CalendarSync
             try
             {
                 var authmodel = new AuthenticateModel();
-                authmodel.UserNameOrEmailAddress = authInfo.userEmail;
-                authmodel.Password = @"123qwe";
+                authmodel.UserNameOrEmailAddress = functionSettings.userEmail;
+                authmodel.Password = functionSettings.password;
                 var json = JsonConvert.SerializeObject(authmodel);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var url = "https://localhost:44301/api/TokenAuth/Authenticate";
+                var url = functionSettings.authAPi;
                 using var client1 = new HttpClient();
 
                 var response = await client1.PostAsync(url, data);
